@@ -1,14 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from datetime import datetime, date, timedelta
-
-# Create your views here.
 from django.utils.safestring import mark_safe
 from django.views import generic
-
 from calendario.forms import ComprasForm
 from calendario.models import Compras
-from calendario.utils import Calendario, soma
+from calendario.utils import Calendario
 import calendar
 
 
@@ -28,7 +25,7 @@ class CalendarioView(generic.ListView):
         context['calendario'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
-        context['soma'] = soma(d)
+        context['soma'] = '{:.2f}'.format(cal.get_valor_soma)
         return context
 
 
@@ -60,6 +57,7 @@ def compras(request):
         if form.is_valid():
             Compras.objects.create(**form.cleaned_data)
             return HttpResponseRedirect('/calendario/')
+
     else:
         form = ComprasForm()
 

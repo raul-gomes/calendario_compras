@@ -1,4 +1,5 @@
 from django.db import models
+from dateutil import relativedelta
 
 
 # Create your models here.
@@ -13,3 +14,18 @@ class Compras(models.Model):
 
     def __str__(self):
         return self.nome_compra
+
+    @property
+    def valor_parcela(self):
+        valor_parcelado = (self.valor_compra - self.entrada) / self.quantidade_parcelas
+        return valor_parcelado
+
+    def data_parcelas(self):
+        nextMonth = self.data_compra
+        parcelas_info = {}
+        datas = []
+        for x in range(1, self.quantidade_parcelas + 1):
+            parcelas_info[x] = nextMonth
+            nextMonth = nextMonth + relativedelta.relativedelta(months=1)
+            datas.append(nextMonth)
+        return datas
