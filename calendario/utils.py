@@ -1,5 +1,10 @@
 import datetime
 from calendar import HTMLCalendar
+
+from django.core import serializers
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
 from calendario.models import Compras
 
 
@@ -20,9 +25,14 @@ class Calendario(HTMLCalendar):
             data = datetime.date(self.year, self.month, day)
 
         for event in events_per_day:
+
+            if data == event.data_compra and event.entrada:
+                d += self.converte_html(event.pk)
+
             if data in event.data_parcelas():
-                d += '<li> {} - R$ {:.2f} </li>'.format(event.nome_compra, event.valor_parcela)
-                Calendario.somar(self, event.valor_parcela)
+                d += self.converte_html(event.pk)
+
+
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
         return '<td></td>'
@@ -52,3 +62,9 @@ class Calendario(HTMLCalendar):
     @property
     def get_valor_soma(self):
         return self.soma
+
+    def converte_html(self, pk):
+        qs = get_object_or_404(Compras, pk=pk)
+        self.somar(qs.valor_parcela)
+        tabela = '<li> {} - R$ {:.2f} </li>'.format(qs.nome_compra, qs.valor_parcela)
+        return "<a href='{}/info/' id='endpoint' data-bs-toggle='modal' data-bs-target='#info-compra'>{}</a>".format(qs.pk, tabela)
