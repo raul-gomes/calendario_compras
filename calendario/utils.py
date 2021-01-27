@@ -64,5 +64,5 @@ class Calendario(HTMLCalendar):
         qs = get_object_or_404(Compras, pk=pk)
         self.somar(qs.valor_parcela)
         descricao = '<li> {} - R$ {:.2f} </li>'.format(qs.nome_compra, qs.valor_parcela)
-        return "<a href='{}' class='link-info' data-bs-toggle='modal' data-bs-target='#info-compra'>{}</a>".format(
+        return "<a id='{}' class='link-info' data-bs-toggle='modal' data-bs-target='#info-compra'>{}</a>".format(
             qs.pk, descricao)

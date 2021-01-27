@@ -1,15 +1,17 @@
 const ROOT = "http://127.0.0.1:8000/compras/";
 
-const infos = document.getElementsByClassName("link-info")
+const infos = document.getElementsById("link-info")
 
 const showData = (result)=>{
     for(const campo in result){
         if(document.querySelector("#"+campo))
             document.querySelector("#"+campo).value = result[campo]
     }
+
 }
 
 function abreModal(pk){
+    console.log(pk)
     fetch(ROOT+pk,
         { method : "GET" ,
           headers : new Headers() ,
@@ -17,8 +19,7 @@ function abreModal(pk){
           cache  : 'default'
         })
     .then( response => { response.json()
-        .then( data => if (data.id === pk)
-            showData(data))
+        .then( data => showData(data))
      })
     .catch(e => console.log('erro ao pegar as informações da compra'))
 }
@@ -27,6 +28,7 @@ function abreModal(pk){
 for (var i = 0; i < infos.length; i++) {
 
     const pk = infos[i].getAttribute("href")
+
     infos[i].addEventListener("click", abreModal(pk))
 
 }
