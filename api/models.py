@@ -2,7 +2,6 @@ from django.db import models
 from dateutil import relativedelta
 
 
-# Create your models here.
 class Compras(models.Model):
     nome_compra = models.CharField(max_length=200)
     valor_compra = models.FloatField()

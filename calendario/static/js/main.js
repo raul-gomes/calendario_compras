@@ -1,18 +1,32 @@
-console.log('hellor world')
-var endpoint = document.getElementById('endpoint').getAttribute('href');
-var modalBody = document.getElementById('modal-body')
+const ROOT = "http://127.0.0.1:8000/compras/";
 
-$.ajax({
-    type: 'GET',
-    url: endpoint,
-    success: function(response){
-        console.log(response)
-        const data = JSON.parse(response.data)
-        data.forEach(el=>{
-            console.log(el.fields)
-        })
-    },
-    error: function(error){
-        console.log(error)
+const infos = document.getElementsByClassName("link-info")
+
+const showData = (result)=>{
+    for(const campo in result){
+        if(document.querySelector("#"+campo))
+            document.querySelector("#"+campo).value = result[campo]
     }
-})
+}
+
+function abreModal(pk){
+    fetch(ROOT+pk,
+        { method : "GET" ,
+          headers : new Headers() ,
+          mode : 'cors' ,
+          cache  : 'default'
+        })
+    .then( response => { response.json()
+        .then( data => if (data.id === pk)
+            showData(data))
+     })
+    .catch(e => console.log('erro ao pegar as informações da compra'))
+}
+
+
+for (var i = 0; i < infos.length; i++) {
+
+    const pk = infos[i].getAttribute("href")
+    infos[i].addEventListener("click", abreModal(pk))
+
+}

@@ -1,11 +1,11 @@
 from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from datetime import datetime, date, timedelta
 from django.utils.safestring import mark_safe
 from django.views import generic
 from calendario.forms import ComprasForm
-from calendario.models import Compras
+from api.models import Compras
 from calendario.utils import Calendario
 import calendar
 
@@ -15,9 +15,9 @@ class index(generic.View):
 
 
 def detail(request, pk):
-    qs = Compras.objects.filter(pk=pk)
+    qs = list(Compras.objects.filter(pk=pk))
     data = serializers.serialize('json', qs)
-    return JsonResponse({'data': data}, safe=False)
+    return render(request, '/calendario/', {'data': data}, content_type='application/json')
 
 
 class CalendarioView(generic.ListView):

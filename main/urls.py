@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from api.views import ComprasViewSet
+
+router = routers.DefaultRouter()
+router.register(r'compras', ComprasViewSet)
 
 urlpatterns = [
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
     path('calendario/', include('calendario.urls')),
     path('admin/', admin.site.urls),
+
 ]
 
