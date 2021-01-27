@@ -13,11 +13,11 @@
 	<a class="btn btn-info right" href="{% url 'calendario' %}?{{ next_month }}"> Mês Seguinte </a>
 	<a class="btn btn-info right" href="{% url 'calendario' %}?{{ prev_month }}"> Mês Anterior </a>
 	<a class="btn btn-info left" href="{% url 'compras' %}"> Nova Compra </a>
-
 </div>
 
 <div style="text-align: center;">Despesa Mensal: R$ {{ soma }}</div>
 <br>
+
 {{ calendario }}
 
 {% endblock %}

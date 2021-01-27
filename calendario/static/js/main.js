@@ -1,6 +1,7 @@
+//const ROOT = "https://calendariocompras.raulgomes1.repl.co:3000/compras/";
 const ROOT = "http://127.0.0.1:8000/compras/";
 
-const infos = document.getElementsById("link-info")
+const infos = document.getElementsByClassName("link-info")
 
 const showData = (result)=>{
     for(const campo in result){
@@ -10,9 +11,10 @@ const showData = (result)=>{
 
 }
 
-function abreModal(pk){
-    console.log(pk)
-    fetch(ROOT+pk,
+function abreModal(evento){
+    evento.preventDefault()
+    const elemento = evento.target.parentNode.getAttribute('id')
+    fetch(ROOT+elemento,
         { method : "GET" ,
           headers : new Headers() ,
           mode : 'cors' ,
@@ -26,9 +28,7 @@ function abreModal(pk){
 
 
 for (var i = 0; i < infos.length; i++) {
-
-    const pk = infos[i].getAttribute("href")
-
-    infos[i].addEventListener("click", abreModal(pk))
+  
+    infos[i].addEventListener("click", abreModal)
 
 }
